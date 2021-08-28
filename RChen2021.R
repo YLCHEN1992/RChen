@@ -16,16 +16,16 @@ colnames(x)=c("samples","name","ct")
 colnames(e)=c("enames","effective")
 cat("数据表头重置成功\n")
 refmean=c()
-for(i in 1:nlevels(x$samples)){
-refmean=c(refmean,mean(subset(subset(x,x$name==ref),subset(x,x$name==ref)$samples==levels(x$samples)[i])$ct))}
+for(i in 1:nlevels(factor(x$samples))){
+refmean=c(refmean,mean(subset(subset(x,x$name==ref),subset(x,x$name==ref)$samples==levels(factor(x$samples))[i])$ct))}
 reftab1=data.frame()
-reftab1=data.frame(refname=levels(x$samples),refmeans=refmean)
+reftab1=data.frame(refname=levels(factor(x$samples)),refmeans=refmean)
 cat(paste("样本内参基因",ref,"均值计算成功\n"))
 x1=data.frame(); x1=subset(x,x$name!=ref);x1$expresslevel=0
 eref=c(subset(e,e$enames==ref)$effective)
 egene=data.frame(); egene=subset(e,e$enames!=ref)
 for(i in 1:nlevels(factor(egene$enames))){
-for(j in 1:nlevels(reftab1$refname)){
+for(j in 1:nlevels(factor(reftab1$refname))){
 for (z in 1:nrow(x1)){
 if(x1$name[z]==egene$enames[i]){
 if(x1$samples[z]==reftab1$refname[j]){
@@ -40,7 +40,7 @@ genemean=c(genemean,mean(subset(S,S$name==levels(factor(S$name))[i])$expressleve
 genetab=data.frame()
 genetab=data.frame(x=levels(factor(S$name)),y=genemean)
 cat(paste("对照样本",nc,"基因均值计算成功\n")); x1$RE=0
-for(i in 1:nlevels(genetab$x)){
+for(i in 1:nlevels(factor(genetab$x))){
 for(z in 1:nrow(x1)){
 if(x1$name[z]==genetab$x[i]){
 x1$RE[z]=x1$expresslevel[z]/genetab$y[i]
